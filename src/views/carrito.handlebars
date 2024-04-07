@@ -1,17 +1,55 @@
 <div id="productsContainer">
   <h2>Carrito de compras</h2>
   <hr />
+{{#each resultado.products}}
+  <p class="product" data-product-id="{{this.product.id}}">ID:
+    {{this.product.id}}, Name:
+    {{this.product.title}}, Price:
+    {{this.product.price}}, Quantity:
+    {{this.quantity}}
+    <button onclick="eliminarProducto('{{../id}}', '{{this.product._id}}','{{this.product.id}}')">Eliminar</button>
+  </p>
+{{/each}}
 
-  {{#each resultado.products}}
-    <p>ID:
-      {{this.product.id}}, Name:
-      {{this.product.title}}, Price:
-      {{this.product.price}}, Quantity:
-      {{this.quantity}}</p>
-  {{/each}}
 
   <button><a href="/api/carts/{{id}}/purchase">Finalizar compra</a></button>
+  
+  <hr />
+</div>
 
 
   <hr />
 </div>
+<script>
+  function eliminarProducto(id,product_Id,productId) {
+    
+  // Realizar una solicitud DELETE al servidor para eliminar el producto del carrito
+  fetch(`/api/carts/${id}/product/${product_Id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('No se pudo eliminar el producto del carrito');
+    }
+    return response.json();
+  })
+  .then(data => {
+  // Eliminar visualmente el producto del carrito
+  const productElement = document.querySelector(`p.product[data-product-id="${productId}"]`);
+  if (productElement) {
+    productElement.remove();
+  }
+  // Mostrar un mensaje de éxito
+  alert(data.message);
+})
+  .catch(error => {
+    console.error('Error:', error);
+    // Mostrar un mensaje de error
+    alert('Error al eliminar el producto del carrito');
+  });
+}
+
+</script>

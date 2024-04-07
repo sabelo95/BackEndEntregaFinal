@@ -64,6 +64,32 @@ describe("Prueba proyecto ", async function () {
       expect(response.body).to.have.property("message").that.equals("Producto actualizado con éxito");
     }); 
 
+    it("debería devolver un mensaje de éxito al agregar un nuevo producto", async function () {
+      // Datos del nuevo producto a agregar
+      const newProductData = {
+        title: "Nuevo título del producto",
+        description: "Nueva descripción del producto",
+        code: "ABC123",
+        price: 99.99,
+        stock: 50,
+        category: "Electrónica",
+        thumbnail: "https://example.com/thumbnail.jpg",
+        owner: "admin" // Este valor puede variar dependiendo de la lógica de tu aplicación
+      };
+    
+     
+      const response = await requester
+        .post("/api/Products")
+        .send(newProductData);
+    
+      
+      expect(response.status).to.equal(201);
+    
+      
+      expect(response.body).to.have.property("message").that.equals("Producto agregado con éxito");
+    });
+    
+
     it("Debería redirigir al usuario a la página de productos después de iniciar sesión correctamente", async () => {
       
       const response = await requester.post("/api/sessions/login")

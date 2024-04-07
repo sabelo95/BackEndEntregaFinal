@@ -56,3 +56,25 @@
 {"level":"error","message":"Error (401) - Error de permisos:  \nError en argumentos:\nArgumentos obligatorios: id\nrecibido {}   \n\n\nFecha: Fri, 29 Mar 2024 22:53:34 GMT\nUsuario: santi\n","timestamp":"2024-03-29T22:53:34.987Z"}
 {"level":"error","message":"Error (401) - Error de permisos:  \nError en argumentos:\nArgumentos obligatorios: id\nrecibido {}   \n\n\nFecha: Fri, 29 Mar 2024 22:56:27 GMT\nUsuario: santi\n","timestamp":"2024-03-29T22:56:27.153Z"}
 {"level":"error","message":"Error (401) - Error de permisos:  \nError en argumentos:\nArgumentos obligatorios: id\nrecibido {}   \n\n\nFecha: Fri, 29 Mar 2024 23:47:18 GMT\nUsuario: santi\n","timestamp":"2024-03-29T23:47:18.499Z"}
+{"level":"error","timestamp":"2024-04-02T00:21:43.394Z"}
+{"level":"error","timestamp":"2024-04-02T00:22:02.899Z"}
+{"level":"error","timestamp":"2024-04-02T00:22:07.367Z"}
+{"level":"error","timestamp":"2024-04-07T13:15:35.951Z"}
+{"level":"error","timestamp":"2024-04-07T13:15:35.952Z"}
+{"level":"error","timestamp":"2024-04-07T13:16:59.696Z"}
+{"level":"error","timestamp":"2024-04-07T13:16:59.697Z"}
+{"level":"error","timestamp":"2024-04-07T13:17:31.836Z"}
+{"level":"error","timestamp":"2024-04-07T13:17:40.706Z"}
+{"level":"error","timestamp":"2024-04-07T13:22:55.066Z"}
+{"level":"error","timestamp":"2024-04-07T13:22:55.070Z"}
+{"level":"error","timestamp":"2024-04-07T13:23:30.714Z"}
+{"level":"error","timestamp":"2024-04-07T13:23:30.715Z"}
+{"level":"error","timestamp":"2024-04-07T13:25:17.376Z"}
+{"level":"error","timestamp":"2024-04-07T13:25:17.380Z"}
+{"level":"error","timestamp":"2024-04-07T13:29:00.316Z"}
+{"level":"error","timestamp":"2024-04-07T13:30:28.405Z"}
+{"level":"error","timestamp":"2024-04-07T13:31:50.440Z"}
+{"level":"error","timestamp":"2024-04-07T13:57:45.317Z"}
+{"level":"error","timestamp":"2024-04-07T14:12:42.159Z"}
+{"level":"error","timestamp":"2024-04-07T14:16:33.099Z"}
+{"level":"error","timestamp":"2024-04-07T14:16:53.721Z"}

@@ -154,7 +154,7 @@ export class productsController {
       if (req.session.usuario.rol !== 'premium' && req.session.usuario.rol !== 'admin') {
         throw new CustomError("Error de permisos", "No puede agregar ningún producto nuevo", STATUS_CODES.ERROR_AUTORIZACION, ERRORES_INTERNOS.PERMISOS, errorArgumentosDel(req.params));
     }
-    
+     
       
   
     let  { title, description, code, price, stock, category, thumbnail ,owner} =
@@ -171,7 +171,7 @@ export class productsController {
       owner = 'admin';
   }
   
-  console.log('owner',owner)
+ 
     
       const savedProduct = await productManager.addProduct({title, description, code, price, stock, category, thumbnail ,owner});
       res

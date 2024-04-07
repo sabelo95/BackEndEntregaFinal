@@ -25,7 +25,7 @@ export class cartsController {
 
   static async getOneCart(req, res) {
     let id = req.params.cid;
-
+    
     try {
       const resultado = await cartManager.getCart(id);
 
@@ -126,12 +126,15 @@ export class cartsController {
 
   static async deleteCart(req, res) {
     let productId = req.params.pid;
+    
+    
     let id = req.params.cid;
-    id = parseInt(id);
+   /*  id = parseInt(id);
+    
 
     if (isNaN(id)) {
       return res.send("Error, ingrese un argumento id numerico");
-    }
+    } */
 
     try {
       if (await cartManager.removeProductFromCart(id, productId)) {
@@ -140,7 +143,8 @@ export class cartsController {
         res.status(404).json({ error: "Carrito no encontrado" });
       }
     } catch (error) {
-      req.logger.error(error);
+       req.logger.error(error); 
+      
       res.status(500).json({ error: "Error al eliminar el producto" });
     }
   }

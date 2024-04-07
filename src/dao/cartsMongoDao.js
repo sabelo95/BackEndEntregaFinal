@@ -2,14 +2,7 @@ import mongoose from "mongoose";
 import { CartModel } from "../dao/models/carts.model.js";
 import { logger } from "../utils/loggers.js";
 
-try {
-    await mongoose.connect(
-      "mongodb+srv://santiagoberriolopez:mecanica95@cluster0.d1pj6rg.mongodb.net/?retryWrites=true&w=majority&dbName=ecommerce"
-    );
-    logger.info("DB Online");
-  } catch (error) {
-    logger.error(error);
-  }
+
 
 
   export class cartMongoDAO{
@@ -62,12 +55,13 @@ try {
     }
 
     static async deleteProduct(cartId, productId){
+      
       const cart = await CartModel.findOneAndUpdate(
-        { id: cartId, "products.product": productId },
+        { _id: cartId, "products.product": productId },
         { $pull: { products: { product: productId } } },
         { new: true }
       );
-
+      
       if (cart) {
         return true;
       } else {

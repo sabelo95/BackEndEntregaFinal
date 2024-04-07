@@ -36,10 +36,13 @@ export class CartManager {
   }
 
   async removeProductFromCart(cartId, productId) {
+    
     try {
-      Dao.deleteProduct(cartId, productId);
+     await Dao.deleteProduct(cartId, productId);
+      return true
     } catch (error) {
-      logger.error(error);
+      console.log(error)
+      /* logger.error(error); */
       throw new Error("Error al eliminar el producto del carrito");
     }
   }
