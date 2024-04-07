@@ -32,6 +32,7 @@
     "shortid": "^2.2.16",
     "socket.io": "^4.7.2",
     "supertest": "^6.3.4",
+    "supertest-session": "^5.0.1",
     "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^4.1.4",
     "winston": "^3.11.0"

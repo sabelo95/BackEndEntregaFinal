@@ -4,7 +4,18 @@ import { TicketModel } from "../dao/models/ticket.model.js";
 import { CustomError , trataError} from '../utils/CustomErrors.js';
 import { ERRORES_INTERNOS, STATUS_CODES } from '../utils/tiposError.js';
 import { errorArgumentos, errorArgumentosDel } from '../utils/errores.js';
+import nodemailer from 'nodemailer'
 
+const transport=nodemailer.createTransport(
+  {
+      service: 'gmail',
+      port: 587, 
+      auth: {
+          user: "santiagoberriolopez@gmail.com",
+          pass: "sqznhvyyrhvcoctd"
+      }
+  }
+)
 
 const cartManager = new CartManager();
 const productManager = new ManagerProduct();
@@ -149,26 +160,28 @@ export class cartsController {
     }
   }
 
+  
+
   static async generateTicket(req, res) {
     try {
+     
       let carUsuario = req.user.car;
       let carrito = await cartManager.getCart(carUsuario);
-      let { noStock, productsStock } =
-        await productManager.updateProductQuantities(carrito);
 
+      
+      let { noStock, productsStock } = await productManager.updateProductQuantities(carrito);
+
+      
       let amount = productsStock.reduce((totalAmount, product) => {
-        // Accede al precio del producto desde la propiedad product.price
         const price = product.product.price;
-        // Verifica si el precio es un número válido
         if (!isNaN(price)) {
-          // Multiplica el precio del producto por su cantidad y lo agrega al monto total
           return totalAmount + price * product.quantity;
         } else {
-          // Si el precio no es un número válido, retorna el monto total sin cambios
           return totalAmount;
         }
       }, 0);
 
+      
       const nuevoTicketData = {
         purchase_datetime: new Date(),
         products: productsStock,
@@ -176,9 +189,45 @@ export class cartsController {
         purchaser: req.user.email,
       };
       const nuevoTicket = await TicketModel.create(nuevoTicketData);
-     
+
       
-      cartManager.updateCartWithNoStockProducts(carUsuario,noStock);
+      cartManager.updateCartWithNoStockProducts(carUsuario, noStock);
+
+      
+      const ticketHTML = `
+        <h1>Ticket de Compra</h1>
+        <h2>GRACIAS POR TU COMPRA :)</h2>
+        <p>Fecha de Compra: ${nuevoTicketData.purchase_datetime}</p>
+        <h2>Productos:</h2>
+        <ul>
+          ${nuevoTicketData.products.map(product => `
+            <li>
+              <strong>${product.product.title}</strong> - Precio: ${product.product.price} - Cantidad: ${product.quantity}
+            </li>
+          `).join('')}
+        </ul>
+        <p>Total a Pagar: ${nuevoTicketData.amount}</p>
+        <p>Comprador: ${nuevoTicketData.purchaser}</p>
+        ${noStock.length ? `
+          <h2>Productos no disponibles:</h2>
+          <ul>
+            ${noStock.map(product => `
+              <li>${product.product.title} - ${product.product.description}</li>
+            `).join('')}
+          </ul>
+          <p>Lo sentimos, estos productos no están disponibles en este momento. Te avisaremos cuando haya inventario.</p>
+        ` : ''}
+      `;
+
+      
+      await transport.sendMail({
+        from: "Santiago Berrio santiagoberriolopez@gmail.com",
+        to: req.user.email,
+        subject: "Detalle de tu compra",
+        html: ticketHTML,
+      });
+
+      
       res.status(200).render('ticket', {
         purchase_datetime: nuevoTicketData.purchase_datetime,
         products: nuevoTicketData.products,
@@ -186,11 +235,10 @@ export class cartsController {
         purchaser: nuevoTicketData.purchaser,
         noStock: noStock
     });
-    
-    
     } catch (error) {
+      
       req.logger.error(error);
-      res.status(500).json({ error: "error" });
+      res.status(500).json({ error: "Error al generar el ticket y enviar el correo electrónico" });
     }
   }
 }

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import supertest from "supertest";
+import supertest from "supertest-session";
 import { describe, it, before, after } from "mocha";
 import mongoose from "mongoose";
 
@@ -33,7 +33,15 @@ describe("Prueba proyecto ", async function () {
     });
     
     it("La ruta /api/products/:pid, en su metodo GET, permite obtener información de un producto específico", async () => {
-     
+      const requestData = {
+        email: "santiagoberriolopez@gmail.com",
+        password: "12345"
+      };
+
+      const loginResponse = await requester
+        .post("/api/sessions/login")
+        .send(requestData)
+        .expect(302); 
       const response = await requester.get("/api/products/1");
 
       
@@ -41,6 +49,16 @@ describe("Prueba proyecto ", async function () {
     })
 
      it("debería devolver un mensaje de éxito al actualizar un producto existente", async function () {
+
+      const requestDataSesion = {
+        email: "adminCoder@coder.com",
+        password: "adminCod3r123"
+      };
+
+      const loginResponse = await requester
+        .post("/api/sessions/login")
+        .send(requestDataSesion)
+        .expect(302); 
       
       const requestData = {
         id: 3, 
@@ -64,7 +82,44 @@ describe("Prueba proyecto ", async function () {
       expect(response.body).to.have.property("message").that.equals("Producto actualizado con éxito");
     }); 
 
+    it("La ruta /:cid/addproduct/:pid permite agregar un producto al carrito", async () => {
+
+      
+      const requestDataSesion = {
+        email: "adminCoder@coder.com",
+        password: "adminCod3r123"
+      };
+
+      const loginResponse = await requester
+        .post("/api/sessions/login")
+        .send(requestDataSesion)
+        .expect(302); 
+      
+      const cartId = "65e8fc22ec6ebc45fa977159";
+      const productId = "65763fce1f9c0876863f22f6";
+
+     
+      const response = await requester
+        .post(`api/carts/${cartId}/addproduct/${productId}`)
+        .expect(200); 
+
+    
+      expect(response.body).to.have.property("message").that.equals("Producto agregado al carrito con éxito");
+     
+    });
+
     it("debería devolver un mensaje de éxito al agregar un nuevo producto", async function () {
+
+      
+      const requestDataSesion = {
+        email: "adminCoder@coder.com",
+        password: "adminCod3r123"
+      };
+
+      const loginResponse = await requester
+        .post("/api/sessions/login")
+        .send(requestDataSesion)
+        .expect(302); 
       // Datos del nuevo producto a agregar
       const newProductData = {
         title: "Nuevo título del producto",
